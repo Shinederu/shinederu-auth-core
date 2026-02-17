@@ -1,4 +1,4 @@
-﻿import { AuthStorage } from "./types";
+﻿import { AuthStorage } from "./types.js";
 
 export const createMemoryStorage = (): AuthStorage => {
   const cache = new Map<string, string>();

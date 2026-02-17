@@ -1,4 +1,5 @@
 ﻿export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+export type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 export type AuthUser = {
   id?: number | string;
@@ -73,7 +74,7 @@ export type AuthClientConfig = {
   defaultCredentials?: RequestCredentials;
   storageKey?: string;
   storage?: AuthStorage;
-  fetcher?: typeof fetch;
+  fetcher?: FetchLike;
   endpoints?: Partial<ActionEndpoints>;
   transformUser?: (payload: unknown) => AuthUser | null;
 };

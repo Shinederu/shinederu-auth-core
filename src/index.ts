@@ -1,5 +1,5 @@
-﻿export { AuthClient, createAuthClient } from "./AuthClient";
-export { createBrowserStorage, createMemoryStorage } from "./storage";
+﻿export { AuthClient, createAuthClient } from "./AuthClient.js";
+export { createBrowserStorage, createMemoryStorage } from "./storage.js";
 export type {
   ActionEndpoints,
   AuthApiResponse,
@@ -12,5 +12,6 @@ export type {
   AuthStateListener,
   AuthStorage,
   AuthUser,
+  FetchLike,
   HttpMethod,
-} from "./types";
+} from "./types.js";

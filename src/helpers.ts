@@ -1,4 +1,4 @@
-﻿import { ActionEndpoints, AuthSession, AuthUser } from "./types";
+﻿import { ActionEndpoints, AuthSession, AuthUser } from "./types.js";
 
 export const DEFAULT_ENDPOINTS: ActionEndpoints = {
   login: "",

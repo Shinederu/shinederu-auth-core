@@ -1,5 +1,5 @@
-﻿import { EMPTY_SESSION, defaultTransformUser, mergeEndpoints, toQueryString } from "./helpers";
-import { createBrowserStorage } from "./storage";
+﻿import { EMPTY_SESSION, defaultTransformUser, mergeEndpoints, toQueryString } from "./helpers.js";
+import { createBrowserStorage } from "./storage.js";
 import {
   AuthApiResponse,
   AuthClientConfig,
@@ -10,8 +10,9 @@ import {
   AuthState,
   AuthStateListener,
   AuthUser,
+  FetchLike,
   HttpMethod,
-} from "./types";
+} from "./types.js";
 
 const DEFAULT_STORAGE_KEY = "shinederu_auth_session";
 
@@ -39,12 +40,19 @@ const getErrorMessage = (data: unknown, fallback: string): string => {
   return fallback;
 };
 
+const getGlobalFetcher = (): FetchLike | null => {
+  if (typeof globalThis === "undefined") return null;
+  if (typeof globalThis.fetch !== "function") return null;
+
+  return globalThis.fetch.bind(globalThis);
+};
+
 export class AuthClient {
   private readonly baseUrl: string;
   private readonly storageKey: string;
   private readonly defaultCredentials: RequestCredentials;
   private readonly storage;
-  private readonly fetcher;
+  private readonly fetcher: FetchLike | null;
   private readonly endpoints;
   private readonly transformUser;
 
@@ -61,7 +69,7 @@ export class AuthClient {
     this.storageKey = config.storageKey ?? DEFAULT_STORAGE_KEY;
     this.defaultCredentials = config.defaultCredentials ?? "include";
     this.storage = config.storage ?? createBrowserStorage();
-    this.fetcher = config.fetcher ?? fetch;
+    this.fetcher = config.fetcher ?? getGlobalFetcher();
     this.endpoints = mergeEndpoints(config.endpoints);
     this.transformUser = config.transformUser ?? defaultTransformUser;
 
@@ -232,6 +240,17 @@ export class AuthClient {
 
   private async request(config: AuthRequestConfig, actionOrPath: string): Promise<AuthApiResponse> {
     this.updateState({ isLoading: true, error: null });
+
+    if (!this.fetcher) {
+      const message = "No fetch implementation available. Provide `fetcher` in AuthClientConfig.";
+      this.updateState({ isLoading: false, error: message });
+      return {
+        ok: false,
+        status: 0,
+        data: null,
+        error: message,
+      };
+    }
 
     const endpoint = this.endpoints[actionOrPath as keyof typeof this.endpoints] ?? "";
     const targetUrl = endpoint ? `${this.baseUrl}${endpoint}` : this.baseUrl;
