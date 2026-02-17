@@ -1,6 +1,6 @@
 ﻿# @shinederu/auth-core
 
-Client d'authentification TypeScript reutilisable, sans dependance React.
+Client d'authentification TypeScript reutilisable et framework-agnostic.
 
 ## Installation
 
@@ -8,21 +8,26 @@ Client d'authentification TypeScript reutilisable, sans dependance React.
 npm i @shinederu/auth-core
 ```
 
-## Exemple rapide
+## Objectif
+
+Centraliser les actions auth (`login`, `me`, `logout`, etc.) pour les partager entre projets React et non-React.
+
+## Exemple minimal
 
 ```ts
 import { createAuthClient } from "@shinederu/auth-core";
 
 const auth = createAuthClient({
   baseUrl: "https://api.shinederu.lol/auth/index.php",
+  defaultCredentials: "include",
 });
 
-await auth.login({ username: "Theo", password: "***" });
+await auth.login({ username: "demo", password: "demo" });
 const me = await auth.me();
-console.log(me.data);
+console.log(me.ok, me.data);
 ```
 
-## API principale
+## API exposee
 
 - `login(credentials)`
 - `register(payload)`
@@ -39,26 +44,18 @@ console.log(me.data);
 - `updateProfile(username)`
 - `updateAvatar(file)`
 - `deleteAccount(password)`
-- `invoke(method, action, payload)` pour les actions custom
+- `invoke(method, action, payload)`
 
-## Evenements d'etat
+## Points techniques
 
-```ts
-auth.subscribe((state) => {
-  console.log(state.isLoading, state.error, state.session.user);
-});
-```
+- Gestion session integree (`subscribe`, `getSession`, `restoreSession`)
+- Stockage configurable (`localStorage`/memoire/custom)
+- `fetch` robuste (support multi-runtime, message clair si absent)
+- Build ESM autonome (imports internes `.js`)
 
-## Stockage
-
-Par defaut:
-- navigateur: `localStorage`
-- hors navigateur: stockage memoire
-
-Tu peux injecter un stockage custom via `storage`.
-
-## Build
+## Scripts
 
 ```bash
 npm run build
+npm run clean
 ```
