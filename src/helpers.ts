@@ -4,6 +4,7 @@ export const DEFAULT_ENDPOINTS: ActionEndpoints = {
   login: "",
   register: "",
   me: "",
+  listUsers: "",
   logout: "",
   logoutAll: "",
   requestPasswordReset: "",
@@ -15,6 +16,7 @@ export const DEFAULT_ENDPOINTS: ActionEndpoints = {
   revokeEmailUpdate: "",
   updateProfile: "",
   updateAvatar: "",
+  updateUserRole: "",
   deleteAccount: "",
 };
 
@@ -53,12 +55,32 @@ export const defaultTransformUser = (payload: unknown): AuthUser | null => {
   const fromData = raw.data && typeof raw.data === "object" ? (raw.data as Record<string, unknown>) : null;
 
   if (raw.user && typeof raw.user === "object") {
-    return raw.user as AuthUser;
+    return normalizeUser(raw.user as AuthUser);
   }
 
   if (fromData?.user && typeof fromData.user === "object") {
-    return fromData.user as AuthUser;
+    return normalizeUser(fromData.user as AuthUser);
   }
 
   return null;
+};
+
+const toBool = (value: unknown): boolean => {
+  if (value === null || value === undefined) return false;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value === 1;
+
+  const normalized = String(value).trim().toLowerCase();
+  return ["1", "true", "yes", "on", "admin"].includes(normalized);
+};
+
+const normalizeUser = (user: AuthUser): AuthUser => {
+  const role = String(user.role ?? "").toLowerCase();
+  const isAdmin = toBool(user.is_admin) || role === "admin";
+
+  return {
+    ...user,
+    role: isAdmin ? "admin" : (role || "user"),
+    is_admin: isAdmin,
+  };
 };

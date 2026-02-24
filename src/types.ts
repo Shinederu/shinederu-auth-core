@@ -6,6 +6,7 @@ export type AuthUser = {
   username?: string;
   email?: string;
   role?: string;
+  is_admin?: boolean | number | string;
   avatar_url?: string;
   created_at?: string;
   [key: string]: unknown;
@@ -41,6 +42,7 @@ export type ActionEndpoints = {
   login: string;
   register: string;
   me: string;
+  listUsers: string;
   logout: string;
   logoutAll: string;
   requestPasswordReset: string;
@@ -52,6 +54,7 @@ export type ActionEndpoints = {
   revokeEmailUpdate: string;
   updateProfile: string;
   updateAvatar: string;
+  updateUserRole: string;
   deleteAccount: string;
 };
 

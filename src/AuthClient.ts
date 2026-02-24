@@ -152,6 +152,10 @@ export class AuthClient {
     return { ...response, data: user };
   }
 
+  public async listUsers(): Promise<AuthApiResponse> {
+    return this.invokeAction("GET", "listUsers");
+  }
+
   public async logout(): Promise<AuthApiResponse> {
     const response = await this.invokeAction("POST", "logout");
     this.clearSession();
@@ -205,6 +209,10 @@ export class AuthClient {
     fd.append("file", file, fileName);
 
     return this.invokeAction("POST", "updateAvatar", fd);
+  }
+
+  public async updateUserRole(userId: number, role: "admin" | "user"): Promise<AuthApiResponse> {
+    return this.invokeAction("PUT", "updateUserRole", { userId, role });
   }
 
   public async deleteAccount(password: string): Promise<AuthApiResponse> {
