@@ -1,4 +1,4 @@
-﻿# @shinederu/auth-core
+# @shinederu/auth-core
 
 Client d'authentification TypeScript reutilisable et framework-agnostic.
 
@@ -18,7 +18,7 @@ Centraliser les actions auth (`login`, `me`, `logout`, etc.) pour les partager e
 import { createAuthClient } from "@shinederu/auth-core";
 
 const auth = createAuthClient({
-  baseUrl: "https://api.shinederu.lol/auth/index.php",
+  baseUrl: "https://api.shinederu.ch/auth/index.php",
   defaultCredentials: "include",
 });
 
