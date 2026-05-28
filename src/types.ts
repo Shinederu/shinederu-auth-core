@@ -7,9 +7,38 @@ export type AuthUser = {
   email?: string;
   role?: string;
   is_admin?: boolean | number | string;
+  project_access?: AuthProjectAccess;
   avatar_url?: string;
   created_at?: string;
   [key: string]: unknown;
+};
+
+export type AuthProjectAccess = {
+  is_global_admin?: boolean | number | string;
+  roles?: Record<string, string[]>;
+  permissions?: AuthProjectPermissions;
+  [key: string]: unknown;
+};
+
+export type AuthProjectPermissions = {
+  auth?: {
+    users_manage?: boolean | number | string;
+  };
+  main?: {
+    announcements_manage?: boolean | number | string;
+  };
+  melodyquest?: {
+    catalog_manage?: boolean | number | string;
+  };
+  box?: {
+    files_manage?: boolean | number | string;
+  };
+  wake?: {
+    devices_wake?: boolean | number | string;
+    devices_manage?: boolean | number | string;
+    users_manage?: boolean | number | string;
+  };
+  [project: string]: Record<string, unknown> | undefined;
 };
 
 export type AuthSession = {

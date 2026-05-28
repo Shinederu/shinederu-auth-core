@@ -5,6 +5,8 @@ export type {
   AuthApiResponse,
   AuthClientConfig,
   AuthCredentials,
+  AuthProjectAccess,
+  AuthProjectPermissions,
   AuthRegisterPayload,
   AuthRequestConfig,
   AuthSession,
