@@ -35,6 +35,7 @@ export type AuthProjectPermissions = {
   };
   wake?: {
     devices_wake?: boolean | number | string;
+    devices_shutdown?: boolean | number | string;
     devices_manage?: boolean | number | string;
     users_manage?: boolean | number | string;
   };

@@ -55,7 +55,10 @@ console.log(me.ok, me.data);
 - `project_access.permissions`
 
 Le package type ce payload (`AuthProjectAccess`, `AuthProjectPermissions`) mais ne fournit pas encore de helper public `hasPermission`.
-Les permissions backend utilisent des cles pointees (`users.manage`, `catalog.manage`); l'API Auth les expose aux frontends en cles compatibles objet (`users_manage`, `catalog_manage`).
+Les permissions backend utilisent des cles pointees (`users.manage`,
+`catalog.manage`, `devices.shutdown`); l'API Auth les expose aux frontends en
+cles compatibles objet (`users_manage`, `catalog_manage`,
+`devices_shutdown`).
 Les frontends peuvent lire ces champs ou appeler `invoke()` pour des endpoints metier; les verifications de securite restent cote backend PHP via `ProjectAccessService`.
 
 ## Points techniques
